@@ -1,0 +1,24 @@
+{
+    "name": "dzinekk/claid-ai",
+    "description": "PHP wrapper for Claid.AI API",
+    "type": "library",
+    "require": {
+        "php": ">=8.1",
+        "cuyz/valinor": "^1",
+        "guzzlehttp/guzzle": "^7"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dzinekk\\ClaidAI\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "dzinekk"
+        }
+    ],
+    "require-dev": {
+        "phpstan/phpstan": "^1",
+        "phpunit/phpunit": "^10"
+    }
+}
