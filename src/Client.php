@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Dzinekk\ClaidAI;
 use Exception;
@@ -26,15 +27,14 @@ class Client {
      * @param array<string, mixed>|null $data
      * @param array<string, mixed>|null $query
      * @return array<string, mixed>
-     * @throws GuzzleException
-     * @throws Exception
+     * @throws ClaidException
      */
     public function request(string $method, string $uri, array $data = null, array $query = null): array {
         if (!empty($data)) {
             $body = json_encode($data);
 
             if (!$body) {
-                throw new Exception('Failed encoding JSON request.');
+                throw new ClaidException('Failed encoding JSON request.');
             }
         }
 
@@ -59,9 +59,15 @@ class Client {
         $data = json_decode($response->getBody()->getContents(), true);
 
         if ($data === null) {
-            throw new Exception('Failed parsing JSON response.');
+            throw new ClaidException('Failed parsing JSON response.');
         }
 
         return $data;
+    }
+    
+    public function editImage(
+        string $input
+    ): ImageEdit {
+        return new ImageEdit($this, $input);
     }
 }
