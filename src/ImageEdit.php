@@ -10,6 +10,9 @@ use Dzinekk\ClaidAI\Enums\Fit;
 use LiteMS;
 
 class ImageEdit {
+    /**
+     * @var array<string, mixed>
+     */
     private array $data = [];
     
     public function __construct(
@@ -72,7 +75,7 @@ class ImageEdit {
     }
     
     /**
-     * @return array body of the response
+     * @return array<string, mixed> body of the response
      * @throws ClaidException
      */
     public function request(): array {

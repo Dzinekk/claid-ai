@@ -7,7 +7,11 @@ use GuzzleHttp\Exception\GuzzleException;
 
 class Client {
     protected \GuzzleHttp\Client $client;
-
+    
+    /**
+     * @param string $apiKey
+     * @param array<string, mixed> $options
+     */
     public function __construct(
         private readonly string $apiKey,
         private readonly array $options = [],
