@@ -61,8 +61,8 @@ class ImageEdit {
         }
         
         $this->data['operations']['resizing'] = [
-            'width' => $width,
-            'height' => $height,
+            'width' => $width ?? 'auto',
+            'height' => $height ?? 'auto',
         ];
         
         if ($fit === Fit::Crop) {
