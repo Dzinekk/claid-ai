@@ -67,9 +67,17 @@ class Client {
          * @var array<string, mixed>|null $data
          */
         $data = json_decode($response->getBody()->getContents(), true);
-
+        
         if ($data === null) {
             throw new ClaidException('Failed parsing JSON response.');
+        }
+        
+        $headers = $response->getHeaders();
+        $data['data']['headers'] = [];
+        foreach ($headers as $name => $values) {
+            foreach ($values as $value) {
+                $data['data']['headers'][$name] = $value;
+            }
         }
 
         return $data;
