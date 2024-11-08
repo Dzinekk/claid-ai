@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Dzinekk\ClaidAI;
 
+use Dzinekk\ClaidAI\Dto\Output;
 use GuzzleHttp\Exception\GuzzleException;
 
 class Client {
@@ -82,8 +83,9 @@ class Client {
     }
     
     public function editImage(
-        string $input
+        string $input,
+        Output $output = null,
     ): ImageEdit {
-        return new ImageEdit($this, $input);
+        return new ImageEdit($this, $input, $output);
     }
 }

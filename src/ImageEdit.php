@@ -9,9 +9,14 @@ use Dzinekk\ClaidAI\Dto\ImageEditHeaders;
 use Dzinekk\ClaidAI\Dto\ImageEditInput;
 use Dzinekk\ClaidAI\Dto\ImageEditOutput;
 use Dzinekk\ClaidAI\Dto\ImageEditResponse;
+use Dzinekk\ClaidAI\Dto\Output;
+use Dzinekk\ClaidAI\Dto\OutputFormat;
+use Dzinekk\ClaidAI\Dto\OutputMetadata;
 use Dzinekk\ClaidAI\Enums\Crop;
 use Dzinekk\ClaidAI\Enums\DecompressType;
 use Dzinekk\ClaidAI\Enums\Fit;
+use Dzinekk\ClaidAI\Enums\FormatType;
+use Dzinekk\ClaidAI\Enums\PngCompressionType;
 use Dzinekk\ClaidAI\Enums\UpscaleType;
 use LiteMS;
 
@@ -24,8 +29,53 @@ class ImageEdit {
     public function __construct(
         private readonly Client $client,
         string $input,
+        Output $output = null,
     ) {
         $this->data['input'] = $input;
+        
+        if ($output !== null) {
+            $this->data['output'] = self::formatOutput($output);
+        }
+    }
+    
+    /**
+     * @param Output $output
+     * @return array<string, mixed>
+     */
+    private static function formatOutput(Output $output): array {
+        $data = [];
+        
+        if ($output->destination !== null) {
+            $data['destination'] = $output->destination;
+        }
+        
+        if ($output->metadata !== null) {
+            $data['metadata'] = [
+                'dpi' => $output->metadata->dpi,
+            ];
+        }
+        if ($output->format instanceof FormatType) {
+            $data['format'] = $output->format->value;
+        }else {
+            $data['format'] = [
+                'type' => $output->format->type->value,
+                'quality' => $output->format->quality,
+                'progressive' => $output->format->progressive,
+            ];
+            
+            if ($output->format->compression !== null) {
+                if ($output->format->compression instanceof PngCompressionType) {
+                    $data['format']['compression'] = $output->format->compression->value;
+                }else {
+                    $data['format']['compression'] = [
+                        'type' => $output->format->compression->type->value,
+                        'quality' => $output->format->compression->quality,
+                    ];
+                }
+            }
+        }
+        
+        return $data;
     }
     
     /** Use AI to resize image without losing quality
