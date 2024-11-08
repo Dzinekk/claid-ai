@@ -10,7 +10,9 @@ use Dzinekk\ClaidAI\Dto\ImageEditInput;
 use Dzinekk\ClaidAI\Dto\ImageEditOutput;
 use Dzinekk\ClaidAI\Dto\ImageEditResponse;
 use Dzinekk\ClaidAI\Enums\Crop;
+use Dzinekk\ClaidAI\Enums\DecompressType;
 use Dzinekk\ClaidAI\Enums\Fit;
+use Dzinekk\ClaidAI\Enums\UpscaleType;
 use LiteMS;
 
 class ImageEdit {
@@ -74,6 +76,38 @@ class ImageEdit {
         }else {
             $this->data['operations']['resizing']['fit'] = $fit->value;
         }
+        
+        return $this;
+    }
+    
+    /** The decompress operation allows you to remove distortion and artifacts caused by image compression.
+     * It can be used in conjunction with the upscale operation to prepare an image for upscaling.
+     * @param DecompressType $type
+     * @return $this
+     */
+    public function decompress(DecompressType $type = DecompressType::Auto): ImageEdit {
+        $this->data['operations']['restorations']['decompress'] = $type->value;
+        
+        return $this;
+    }
+    
+    /** The upscale operation allows you to improve the overall quality of an image by rendering out new pixels.
+     * The upscale operation works along with Resizing through numeric or percentage values for upscaling.
+     * @param UpscaleType $type
+     * @return $this
+     */
+    public function upscale(UpscaleType $type): ImageEdit {
+        $this->data['operations']['restorations']['upscale'] = $type->value;
+        
+        return $this;
+    }
+    
+    /** The polish operation allows you to redraw image parts making them sharper, yet keeping the original structure.
+     * It can be used individually, or in conjunction with the Upscale (we recommend Smart Enhance upscale) operation to make the image look even sharper and more realistic.
+     * @return $this
+     */
+    public function polish(): ImageEdit {
+        $this->data['operations']['restorations']['polish'] = true;
         
         return $this;
     }
