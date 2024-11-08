@@ -75,9 +75,7 @@ class Client {
         $headers = $response->getHeaders();
         $data['data']['headers'] = [];
         foreach ($headers as $name => $values) {
-            foreach ($values as $value) {
-                $data['data']['headers'][$name] = $value;
-            }
+            $data['data']['headers'][$name] = implode(', ', $values);
         }
 
         return $data;
